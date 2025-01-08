@@ -17,7 +17,8 @@ const userSchema=new mongoose.Schema({
     phone_number:{
         type:String,
         require:true,
-        unique:true
+        unique:true,
+        default: "+923054170452"
     },
     pan_card_number:{
         type:String,

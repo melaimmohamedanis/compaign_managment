@@ -10,7 +10,7 @@ const app =express();
 app.use(express.json());
 app.use(cors(
 {
-origin: 'http://localhost:/3000',
+origin: 'http://localhost:3000',
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -19,7 +19,7 @@ origin: 'http://localhost:/3000',
 app.get('/', (req, res) => {
     res.send('Server working !');
   });
-  app.use("/signup",signupRoute);
+  app.use("/",signupRoute);
 
 
 app.listen(5000,()=>{console.log('server listening on port 5000')})
