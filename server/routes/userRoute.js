@@ -1,6 +1,9 @@
 import express from"express";
 import User from "../Models/UserModel.js";
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken';
+import dotenv from "dotenv";
+dotenv.config()
 const router =express.Router();
 router.post('/register',async (request,response)=>{
    // console.log("body",request.body)
@@ -49,7 +52,7 @@ router.post('/register',async (request,response)=>{
                    { message:'User successflly register'}  );
             } catch (error) {
                 return response.status(400).send({
-                    message:error
+                    message:error.message
                 })
             }
            
@@ -58,8 +61,51 @@ router.post('/register',async (request,response)=>{
     } catch (error) {
        
         return response.status(400).send({
-            message:error
+            message:error.message
         })
+    }
+
+})
+router.post('/login',async(request,response)=>{
+   
+    const JWT_SECRET_KEY=process.env.JWT_SECRET_KEY;
+    const ACCESS_TOKEN_TIME=process.env.ACCESS_TOKEN_TIME;
+    
+    const email=request.body.email;
+    const password=request.body.password;
+    console.log("password",password)
+    console.log("email",email)
+    try {
+      const user=await User.findOne({email:email})
+   
+      if(!user || user==null || user==undefined){
+        return response.status(400).send({message:"User does not exist try to Signup"})
+      }
+      else{
+        const isMatch=bcrypt.compareSync(password,user.password);
+        if(!isMatch){
+          return response.status(400).send({message:"Password wrong"})
+        }else{
+          const accesstoken=jwt.sign({user},JWT_SECRET_KEY,{expiresIn:ACCESS_TOKEN_TIME});
+         
+          response.cookie("accesstoken",accesstoken,{
+            expires:new Date(Date.now()+1000*20*60),
+            httpOnly:true,
+            sameSite:true,
+            secure:false
+          });
+
+          
+          return response.status(201).send(
+            { user,accesstoken}  ); 
+
+          
+        }
+         
+      }
+          
+    } catch (error) {
+      console.log("error",error)
     }
 
 })

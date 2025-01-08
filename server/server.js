@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from"cors";
 import { database } from "./db.js";
-import signupRoute from './routes/signupRoute.js'
+import userRoute from './routes/userRoute.js'
 dotenv.config()
 database();
 const app =express();
@@ -19,7 +19,7 @@ origin: 'http://localhost:3000',
 app.get('/', (req, res) => {
     res.send('Server working !');
   });
-  app.use("/",signupRoute);
+  app.use("/",userRoute);
 
 
 app.listen(5000,()=>{console.log('server listening on port 5000')})
