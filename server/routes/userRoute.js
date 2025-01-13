@@ -37,6 +37,12 @@ router.post('/register',async (request,response)=>{
                 
             }
             else{
+                const existingUser = await User.findOne({ email });
+                if (existingUser) {
+                  return res
+                    .status(400)
+                    .send({ message: "User with the same email already exists" });
+                } 
             const password= request.body.password 
             const newUser={
                 firstname:request.body.firstname,
@@ -73,8 +79,8 @@ router.post('/login',async(request,response)=>{
     
     const email=request.body.email;
     const password=request.body.password;
-    console.log("password",password)
-    console.log("email",email)
+    //console.log("password",password)
+   // console.log("email",email)
     try {
       const user=await User.findOne({email:email})
    
@@ -108,5 +114,41 @@ router.post('/login',async(request,response)=>{
       console.log("error",error)
     }
 
+})
+router.get('/me',async(request,response)=>{
+    var cookies=request.cookies;
+    //console.log("cookies",cookies)
+    if (!cookies) {
+        return response.status(400).send( {user:null,loginStatus:false,message: 'Not authorized, try to login in' });
+             }
+  
+    const accesstoken=cookies?.accesstoken;
+    try {
+   
+            if(accesstoken==undefined || !accesstoken){
+              return response.status(400).send( {user:null,loginStatus:false,message: 'Not authorized, try to login in' });
+            }else{
+            const verifytoken=jwt.verify(accesstoken,process.env.JWT_SECRET_KEY,async(error,decoded)=>{
+             if(error){
+                return response.status(400).send( {user:null,loginStatus:false,message: 'Not authorized, try to login in' });
+            }else{
+            //  console.log("decoded",decoded)
+              const user=decoded.user
+              
+                return response.status(201).send({user:user,loginStatus:true})
+              
+             }
+            })
+             return verifytoken
+              }
+          
+        
+            
+          
+         
+        } catch (error) {
+          console.log("error",error)
+        }
+  
 })
 export default router;

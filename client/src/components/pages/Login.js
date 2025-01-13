@@ -1,22 +1,25 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { loginuserApi } from '../Api/UserApi';
+import { useNavigate } from 'react-router-dom';
 export default function () {
+  const navigate=useNavigate()
     const [formData, setFormData] = useState({
         email: "",
         password: "",
       });
        const {mutate:loginuser}=useMutation( {mutationFn:loginuserApi, onSuccess:()=>{
               setMessage({type: "success", text:"Login successfly "});
-            //  navigate("/",{replace:true})
+              navigate("/",{replace:true})
             }})
       const [message, setMessage] = useState({ type: "", text: "" });
       const handleSubmit = async(e) =>{
         e.preventDefault();
              
                 try {
-                    const data= await loginuserApi(formData);
-                    
+                  //  const data= await loginuserApi(formData);
+                  const data=  loginuser(formData);
+                    setMessage({type:data.type, text:data.text})
                   console.log("data",data)
                   } catch (error) {
                   
@@ -97,6 +100,7 @@ export default function () {
           </button>
         </div>
       </form>
+     
       {/* Message Section */}
       {message.text && (
         <div
@@ -105,8 +109,10 @@ export default function () {
           }`}
         >
           {message.text}
+       
         </div>
       )}
+     
     </div>
   </div>
   )

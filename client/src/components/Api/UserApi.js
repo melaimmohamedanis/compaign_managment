@@ -40,5 +40,20 @@ export const loginuserApi=async(user)=>{
        // console.error("An unexpected error occurred:", error.message);
         return { type: "error", text: "An unexpected error occurred!" }; // Rethrow unexpected errors
       }
-   
+
+    }
+
+export const IslogedIn   = async()=>{
+  try {
+    const response = await userapi.get("/me",{ withCredentials: true });
+    return  response.data
+    
+  } catch (error) {
+    if (error.response && error.response.status === 400) {
+      // Handle 400 error
+    //  console.log(error.response.data.message); // Log the error message
+      return {loginStatus:false, type: "error", text: error.response.data.message }; // Return error message
+    }
+    
+  }
 }

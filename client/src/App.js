@@ -8,16 +8,31 @@ import Invoice from './components/InvoiceCompenets/InvoiceContainer';
 import InvoiceContainer from './components/InvoiceCompenets/InvoiceContainer';
 import Navbar from './components/Navbar';
 import InvoiceForm from './components/InvoiceCompenets/InvoiceForm';
-
+import ReadCSV from './components/InvoiceCompenets/ReadCSV';
+import UserRoute from './components/AuthPages/UserRoute';
+import Campaigns from './components/pages/Campaigns';
+import ReadCSV_exemple from './components/InvoiceCompenets/ReadCSV_exemple';
+import DashboardMain from './components/Dashboard/DashboardMain';
+/*
+<Routes>
+<Route path='/' element={<UserRoute/>}>
+<Route path="/" element={<Home />} />
+</Route>*/
 function App() {
   return (
     <BrowserRouter>
     <Navbar/>
         <Routes>
-      <Route path="/" element={<Home />} />
+      
+        <Route path="/" element={<Home />} />
+
+     
       <Route path="/register" element={<Register />}> </Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/invoice" element={<InvoiceContainer />}></Route>
+      <Route path="/compaigns" element={<Campaigns />}></Route>
+      <Route path="/dashboard" element={<DashboardMain />}></Route>
+
       
      
     </Routes>

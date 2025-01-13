@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function UploadCSV  ()  {
+export default function UploadCSV  ({ onFileSelect })  {
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
 
@@ -19,6 +19,7 @@ export default function UploadCSV  ()  {
     if (file && file.type === "text/csv") {
       setFile(file);
       setError("");
+      onFileSelect(file);//
     } else {
       setFile(null);
       setError("Only CSV files are allowed.");
@@ -26,8 +27,9 @@ export default function UploadCSV  ()  {
   };
 
   return (
+ 
     <div
-      className="border-2 border-dashed border-gray-300 rounded-lg p-6 w-full max-w-xl text-center bg-white mx-auto mb-8"
+      className="  flex items-center flex-col justify-center align-middle border-2 border-dashed border-gray-300 rounded-lg p-6 h-80 w-full max-w-xl text-center bg-white mx-auto mb-8"
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleFileDrop}
     >
@@ -54,6 +56,7 @@ export default function UploadCSV  ()  {
         <p className="mt-4 text-red-600 text-sm">{error}</p>
       )}
     </div>
+   
   );
 };
 
