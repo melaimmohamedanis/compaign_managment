@@ -1,4 +1,4 @@
-import express from"express";
+import express, { request, response } from"express";
 import Invoice from "../Models/InvoiceModel.js";
 const router =express.Router();
 function trimKeys(obj) { 
@@ -39,5 +39,38 @@ return invoice_added
 } catch (error) {
     console.log(error)
 }
+})
+router.put('/edit-campaign/:id',async(request,response)=>{
+    try {
+        const trimmedBody = trimKeys(request.body); 
+        const id=request.body.invoice_id
+        const invoice={
+            invoiceNumber:trimmedBody.invoiceNumber,
+            tax:trimmedBody.tax,
+            company:trimmedBody.company,
+            client:trimmedBody.client,
+            items:trimmedBody.items
+        }
+        var invoice_updated = await Invoice.findByIdAndUpdate(
+            { _id: id },
+            {
+              $set: invoice,
+            }
+          );
+        
+          return invoice_updated;
+        
+    } catch (error) {
+        
+    }
+})
+router.delete('/delete-campaign/:id',async(request,response)=>{
+    console.log("invoice",request.params.id)
+    try {
+         const result = await Invoice.findByIdAndDelete(request.params.id);
+         console.log('result',result)
+         if (result) { response.status(200).send(`Invoice with ID ${request.params.id} deleted.`); }
+          else { response.status(404).send('Invoice not found.'); } }
+     catch (err) { response.status(500).send(`Server error.${err}`); }
 })
 export default router;
