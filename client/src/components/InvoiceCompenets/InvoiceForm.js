@@ -1,22 +1,30 @@
 import React, { useState } from "react";
 import InvoiceExemple from "./InvoiceExemple";
+import { useQuery } from "@tanstack/react-query";
+import { getoneInvoice } from "../Api/InvoiceApi";
+import { useParams } from "react-router-dom";
 
 const InvoiceForm = () => {
+  const { id } = useParams();
+  console.log('id',id)
+  const { data, isLoading,  isError } = useQuery({ queryKey: ["invoices"],
+    queryFn:() =>getoneInvoice(id)});
+  console.log('form_invoice',data)
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [company, setCompany] = useState({
-    name: "",
-    location: "",
-    email: "",
-    phone: "",
-    pan: "",
+    name: data.company.name.name || "",
+    location: data.company.location || "",
+    email: data.company.email || "",
+    phone:data.company.phone || "",
+    pan: data.company.pan || "",
   });
   const [client, setClient] = useState({
-    name: "",
-    location: "",
-    email: "",
+    name: data.client.name || "",
+    location: data.client.location || "",
+    email: data.client.email || "",
   });
-  const [items, setItems] = useState([{ name: "", quantity: 1, price: 0 }]);
-  const [tax, setTax] = useState(0);
+  const [items, setItems] = useState( data.items || [{ name: "", quantity: 1, price: 0 }]);
+  const [tax, setTax] = useState(data.tax || 0);
   const [totals, setTotals] = useState({ subtotal: 0, total: 0 });
 console.log(items)
   const handleItemChange = (index, field, value) => {
@@ -64,7 +72,12 @@ console.log(items)
     console.log(invoiceData);
     alert("Invoice submitted successfully!");
   };
-
+if(isLoading) return(
+  <h1>is Loading</h1>
+)
+if(isError) return(
+  <h1>is Error</h1>
+)
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-6 space-y-6">

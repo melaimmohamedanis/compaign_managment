@@ -37,7 +37,7 @@ export const getoneInvoice=async(invoice_id)=>{
     console.log('invoiceapi',invoice_id)
     try {
         const response = await invoiceapi.get(`/get-one-compaign/${invoice_id}`,{ withCredentials: true });
-        console.log("data",response.data)
+        console.log("oneinvoice",response.data)
         if(response.data){
         
         return response.data

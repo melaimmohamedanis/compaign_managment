@@ -6,6 +6,7 @@ import InvoiceExemple from "../InvoiceCompenets/InvoiceExemple";
 import html2pdf from 'html2pdf.js';
 import ReactDOM from 'react-dom/client';
 import { createRoot } from 'react-dom/client';
+import { useNavigate } from "react-router-dom";
 
 
 const generatePDF1 = (invoiceData) => {
@@ -50,10 +51,10 @@ const InvoiceDashboard = () => {
     "Last year",
   ];
   const customStyles = { content: { top: '0', left: '0', right: '0', bottom: '0', margin: '0', padding: '20px', backgroundColor: '#fff', borderRadius: '0', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', }, overlay: { backgroundColor: 'rgba(0, 0, 0, 0.75)', }, };
-
+const navigate=useNavigate()
   const handleEdit = async (invoiceId) => {
      console.log('Editing invoice', invoiceId);
-     // Add your edit logic here
+     navigate(`/dashboard/invoices/${invoiceId}`,{replace:true})
       }; 
      const handleDelete = async (invoiceId) => {
          console.log('Deleting invoice', invoiceId); 

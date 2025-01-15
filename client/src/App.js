@@ -38,6 +38,9 @@ function App() {
       <Route path="/dashboard/invoices" element={<DashboardMain />}>  
       <Route path="/dashboard/invoices" element={<InvoiceDashboard/>}/></Route> 
 
+      <Route path="/dashboard/invoices/:id" element={<DashboardMain />}>  
+      <Route path="/dashboard/invoices/:id" element={<InvoiceForm/>}/></Route> 
+
       
      
     </Routes>
