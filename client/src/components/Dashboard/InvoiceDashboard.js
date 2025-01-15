@@ -49,23 +49,29 @@ const InvoiceDashboard = () => {
     "Last month",
     "Last year",
   ];
+  const customStyles = { content: { top: '0', left: '0', right: '0', bottom: '0', margin: '0', padding: '20px', backgroundColor: '#fff', borderRadius: '0', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', }, overlay: { backgroundColor: 'rgba(0, 0, 0, 0.75)', }, };
 
-
-const handleDelete=()=>{}
-const handleEdit=()=>{}
-const handleView=async(invoice_id)=>{
-    const OneInvoice=await getoneInvoice(invoice_id)
-    console.log('OneInvoice',OneInvoice)
-    setInvoiceData(OneInvoice);
-     setModalIsOpen(true)
-}
+  const handleEdit = async (invoiceId) => {
+     console.log('Editing invoice', invoiceId);
+     // Add your edit logic here
+      }; 
+     const handleDelete = async (invoiceId) => {
+         console.log('Deleting invoice', invoiceId); 
+        // Add your delete logic here
+         };
 const closeModal = () => { setModalIsOpen(false); setInvoiceData(null); };
 const handleDownload=async(invoice_id)=>{
     console.log('invoice_id',invoice_id)
     const OneInvoice=await getoneInvoice(invoice_id)
     generatePDF1(OneInvoice);
 }
-
+const handleView=async(invoice_id)=>{
+    console.log('hello',invoice_id)
+    const OneInvoice=await getoneInvoice(invoice_id)
+    console.log('OneInvoice',OneInvoice)
+    setInvoiceData(OneInvoice);
+    setModalIsOpen(true)
+}
     
 if (isLoading) return <div>Loading...</div>; if (isError) return <div>Error: {isError.message}</div>;
   return (
@@ -160,30 +166,37 @@ if (isLoading) return <div>Loading...</div>; if (isError) return <div>Error: {is
                 </button>
               </td>
               <td className="px-6 py-4">
-                <button onClick={()=>handleView(item._id)} className="font-medium text-blue-600 hover:underline">
-                  View
+              <button onClick={() =>handleView(item._id)} className="font-medium text-blue-600 hover:underline">
+                 View
                 </button>
               </td>
               <td className="px-6 py-4">
-                <button onClick={handleEdit(item._id)}   className="font-medium text-blue-600 hover:underline">
+              <button onClick={() =>handleEdit(item._id)} className="font-medium text-blue-600 hover:underline">
                  Edit
                 </button>
               </td>
               <td className="px-6 py-4">
-                <button onClick={handleDelete(item._id)} className="font-medium text-red-600 hover:underline">
-                  Delete
+              <button onClick={() =>handleView(item._id)} className="font-medium text-red-600 hover:underline">
+                Delete
                 </button>
               </td>
+              
             </tr>
           ))}
         </tbody>
       </table>
-      <Modal
+     
+      <Modal style={customStyles}
        isOpen={modalIsOpen} 
-       onRequestClose={closeModal}
-       contentLabel="Invoice Modal"> {invoiceData && <InvoiceExemple {...invoiceData} />}
-        <button onClick={closeModal}>Close</button>
-       </Modal>
+       onRequestClose={closeModal} 
+       contentLabel="Invoice Modal">
+     
+
+      <button onClick={closeModal} class="   text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm  mx-auto w-16 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Close</button>
+
+         {invoiceData && <InvoiceExemple {...invoiceData} />} 
+      </Modal>
+     
     </div>
   );
 };
