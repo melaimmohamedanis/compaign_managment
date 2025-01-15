@@ -5,7 +5,7 @@ export default function InvoiceExemple({ invoiceNumber, company, client, items, 
   const taxAmount = (subtotal * tax) / 100;
   const total = subtotal + taxAmount;
   return (
-    <div>
+    <div className="invoice">
          <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl mx-auto">
     <div className="flex justify-between items-center border-b pb-6 mb-6">
       <div>

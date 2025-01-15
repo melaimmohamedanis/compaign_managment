@@ -13,6 +13,7 @@ import UserRoute from './components/AuthPages/UserRoute';
 import Campaigns from './components/pages/Campaigns';
 import ReadCSV_exemple from './components/InvoiceCompenets/ReadCSV_exemple';
 import DashboardMain from './components/Dashboard/DashboardMain';
+import InvoiceDashboard from './components/Dashboard/InvoiceDashboard';
 /*
 <Routes>
 <Route path='/' element={<UserRoute/>}>
@@ -32,6 +33,10 @@ function App() {
       <Route path="/invoice" element={<InvoiceContainer />}></Route>
       <Route path="/compaigns" element={<Campaigns />}></Route>
       <Route path="/dashboard" element={<DashboardMain />}></Route>
+         
+
+      <Route path="/dashboard/invoices" element={<DashboardMain />}>  
+      <Route path="/dashboard/invoices" element={<InvoiceDashboard/>}/></Route> 
 
       
      

@@ -33,7 +33,7 @@ const invoice={
 //console.log("invoice",trimmedBody)
 const invoice_added=await Invoice.create(invoice)
 
-return invoice_added
+response.status(200).send(invoice_added)
     
     
 } catch (error) {
@@ -71,6 +71,26 @@ router.delete('/delete-campaign/:id',async(request,response)=>{
          console.log('result',result)
          if (result) { response.status(200).send(`Invoice with ID ${request.params.id} deleted.`); }
           else { response.status(404).send('Invoice not found.'); } }
-     catch (err) { response.status(500).send(`Server error.${err}`); }
+     catch (error) { response.status(500).send(`Server error.${error}`); }
+})
+router.get('/get-campaigns',async(request,response)=>{
+    
+    try {
+        const compaigns=await Invoice.find()
+    response.status(200).send(compaigns);
+    }catch (error) { response.status(500).send(`Server error.${error}`); }
+})
+router.get('/get-one-compaign/:id',async(request,response)=>{
+    
+    try {
+        const result = await Invoice.findById(request.params.id)
+        console.log(result)
+    if(result){
+        return response.status(200).send(result)
+    } else { response.status(404).send('Invoice not found'); }
+    } catch (error) {
+        response.status(500).send(`Server error.${error}`);
+    }
+   
 })
 export default router;

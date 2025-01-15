@@ -4,14 +4,11 @@ import { Outlet } from 'react-router-dom'
 
 export default function DashboardMain() {
   return (
-    <>
+    <div className='flex flex-row'>
     <Sidebar/>
-   
-    <div class="py-24 px-0 pb-12 border-2 border-blue-500 flex items-center justify-center">
+    <div className='w-full h-full'>
     <Outlet/>
-</div>
-    
-  
-        </>
+    </div>
+        </div>
   )
 }
