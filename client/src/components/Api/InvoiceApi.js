@@ -6,6 +6,7 @@ const invoiceapi=axios.create({
 export const addInvoice=async(invoice_data)=>{
     try {
         const response = await invoiceapi.post("/addinvoice", invoice_data);
+        return response.data
     } catch (error) {
         
     }
@@ -13,9 +14,11 @@ export const addInvoice=async(invoice_data)=>{
 
 export const deleteInvoice=async(invoice_id)=>{
     try {
-        const response = await invoiceapi.delete("/delete-campaign", invoice_id);
+        const response = await invoiceapi.delete(`/delete-campaign/${invoice_id}`);
+        return alert('Invoice successflly deleted')
 
     } catch (error) {
+        alert('Invoice not found. Please check the invoice ID and try again.');
         
     }
 }
@@ -71,4 +74,5 @@ export const update_invoice=async(invoiceId, updatedInvoiceData)=>{
             alert('Network error or server is down. Please try again later.'); } 
         }
 }
+
 

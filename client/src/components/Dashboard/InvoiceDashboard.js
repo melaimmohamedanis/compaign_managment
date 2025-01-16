@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getInvoice, getoneInvoice } from "../Api/InvoiceApi";
+import { deleteInvoice, getInvoice, getoneInvoice } from "../Api/InvoiceApi";
 import { useQuery } from "@tanstack/react-query";
 import Modal from 'react-modal';
 import InvoiceExemple from "../InvoiceCompenets/InvoiceExemple";
@@ -56,9 +56,9 @@ const navigate=useNavigate()
      console.log('Editing invoice', invoiceId);
      navigate(`/dashboard/invoices/${invoiceId}`,{replace:true})
       }; 
-     const handleDelete = async (invoiceId) => {
+  const handleDelete = async (invoiceId) => {
          console.log('Deleting invoice', invoiceId); 
-        // Add your delete logic here
+         deleteInvoice(invoiceId)
          };
 const closeModal = () => { setModalIsOpen(false); setInvoiceData(null); };
 const handleDownload=async(invoice_id)=>{
@@ -177,7 +177,7 @@ if (isLoading) return <div>Loading...</div>; if (isError) return <div>Error: {is
                 </button>
               </td>
               <td className="px-6 py-4">
-              <button onClick={() =>handleView(item._id)} className="font-medium text-red-600 hover:underline">
+              <button onClick={() =>handleDelete(item._id)} className="font-medium text-red-600 hover:underline">
                 Delete
                 </button>
               </td>
