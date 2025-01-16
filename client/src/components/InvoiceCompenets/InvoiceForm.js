@@ -1,32 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InvoiceExemple from "./InvoiceExemple";
 import { useQuery } from "@tanstack/react-query";
-import { getoneInvoice } from "../Api/InvoiceApi";
+import { getoneInvoice, update_invoice } from "../Api/InvoiceApi";
 import { useParams } from "react-router-dom";
 
 const InvoiceForm = () => {
   const { id } = useParams();
-  console.log('id',id)
-  const { data, isLoading,  isError } = useQuery({ queryKey: ["invoices"],
-    queryFn:() =>getoneInvoice(id)});
-  console.log('form_invoice',data)
-  const [invoiceNumber, setInvoiceNumber] = useState("");
-  const [company, setCompany] = useState({
-    name: data.company.name.name || "",
-    location: data.company.location || "",
-    email: data.company.email || "",
-    phone:data.company.phone || "",
-    pan: data.company.pan || "",
-  });
-  const [client, setClient] = useState({
-    name: data.client.name || "",
-    location: data.client.location || "",
-    email: data.client.email || "",
-  });
-  const [items, setItems] = useState( data.items || [{ name: "", quantity: 1, price: 0 }]);
-  const [tax, setTax] = useState(data.tax || 0);
+  //console.log('id',id)
+  const { data, isLoading, isError } = useQuery({ queryKey: ["invoices", id], queryFn: () => getoneInvoice(id) });
+  
+  const [invoiceNumber, setInvoiceNumber] = useState(""); 
+  const [company, setCompany] = useState({ name: "", location: "", email: "", phone: "", pan: "" });
+  const [client, setClient] = useState({ name: "", location: "", email: "" });
+  const [items, setItems] = useState([{ name: "", quantity: 1, price: 0 }]); 
+  const [tax, setTax] = useState(0);
+  const [approved, setApproved] = useState(data?.approved || false);
+  useEffect(() => { 
+      if (data) { setInvoiceNumber(data.invoiceNumber || ""); 
+      setCompany({ name: data.company?.name || "", location: data.company?.location || "", email: data.company?.email || "", phone: data.company?.phone || "", pan: data.company?.pan || "" });
+      setClient({ name: data.client?.name || "", location: data.client?.location || "", email: data.client?.email || "" }); 
+      setItems(data.items || [{ name: "", quantity: 1, price: 0 }]);
+      setTax(data.tax || 0); 
+      setApproved(data.approved || false);
+    } }, [data]);
+
   const [totals, setTotals] = useState({ subtotal: 0, total: 0 });
-console.log(items)
+//console.log(items)
   const handleItemChange = (index, field, value) => {
     const updatedItems = [...items];
     updatedItems[index][field] = field === "quantity" || field === "price" ? parseFloat(value) || 0 : value;
@@ -56,9 +55,14 @@ console.log(items)
   const removeItem = (index) => {
     const updatedItems = items.filter((_, i) => i !== index);
     setItems(updatedItems);
-    updateTotals(updatedItems, tax);
+    try {
+      updateTotals(updatedItems, tax);
+    } catch (error) {
+      alert(error)
+    }
+    
   };
-
+console.log('tax',tax)
   const handleSubmit = (e) => {
     e.preventDefault();
     const invoiceData = {
@@ -67,8 +71,9 @@ console.log(items)
       client,
       items,
       tax,
-      totals,
+      approved,
     };
+    update_invoice(id,invoiceData)
     console.log(invoiceData);
     alert("Invoice submitted successfully!");
   };
@@ -126,6 +131,17 @@ if(isError) return(
             ))}
           </div>
         </div>
+
+        {/* Approved Status */} <div> <h3 className="text-lg font-semibold text-gray-700">
+          Approved
+          </h3> 
+        <div className="mb-4"> <label className="block text-sm font-medium text-gray-700">
+          Status
+        </label>
+         <select value={approved} onChange={(e) => setApproved(e.target.value === 'true')} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" >
+           <option value="true">True</option> 
+        <option value="false">False</option> </select> 
+        </div> </div>
 
         {/* Items and Tax */}
         <div>

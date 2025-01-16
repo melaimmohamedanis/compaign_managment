@@ -57,7 +57,7 @@ router.put('/edit-campaign/:id',async(request,response)=>{
     try {
      
         var invoice_updated = await Invoice.findByIdAndUpdate(
-            { _id: id.id },
+            { _id: id.id},
             {
               $set: trimKeys(request.body),
             }
@@ -75,7 +75,7 @@ router.delete('/delete-campaign/:id',async(request,response)=>{
     console.log("invoice",request.params.id)
     try {
          const result = await Invoice.findByIdAndDelete(request.params.id);
-         console.log('result',result)
+      //   console.log('result',result)
          if (result) { response.status(200).send(`Invoice with ID ${request.params.id} deleted.`); }
           else { response.status(404).send('Invoice not found.'); } }
      catch (error) { response.status(500).send(`Server error.${error}`); }
@@ -91,7 +91,7 @@ router.get('/get-one-compaign/:id',async(request,response)=>{
     
     try {
         const result = await Invoice.findById(request.params.id)
-        console.log(result)
+       // console.log(result)
     if(result){
         return response.status(200).send(result)
     } else { response.status(404).send('Invoice not found'); }
