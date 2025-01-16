@@ -41,27 +41,34 @@ response.status(200).send(invoice_added)
 }
 })
 router.put('/edit-campaign/:id',async(request,response)=>{
+    const { invoiceNumber, company, tax, client, items, approved } = trimKeys(request.body); 
+    const id=request.params
+    console.log(id)
+    if (!id) return response.status(404).send('Invoice not found');
+    if (!invoiceNumber || !company || !tax || !client || !items || approved === undefined) {
+         return response.status(400).send('All required fields must be provided.'); }
+     if (!company.name || !company.location || !company.phone || !company.pan || !company.email) 
+        { return response.status(400).send('Company fields must all be provided.'); }
+      if (!client.name || !client.location || !client.email)
+         { return response.status(400).send('Client fields must all be provided.'); }
+       for (let item of items) { 
+        if (!item.name || !item.price || !item.quantity)
+             { return response.status(400).send('Each item must have a name, price, and quantity.'); } }
     try {
-        const trimmedBody = trimKeys(request.body); 
-        const id=request.body.invoice_id
-        const invoice={
-            invoiceNumber:trimmedBody.invoiceNumber,
-            tax:trimmedBody.tax,
-            company:trimmedBody.company,
-            client:trimmedBody.client,
-            items:trimmedBody.items
-        }
+     
         var invoice_updated = await Invoice.findByIdAndUpdate(
-            { _id: id },
+            { _id: id.id },
             {
-              $set: invoice,
+              $set: trimKeys(request.body),
             }
           );
+          if (!invoice_updated) return response.status(404).send('Invoice not found');
+         
         
-          return invoice_updated;
+          return response.status(200).send(invoice_updated);
         
     } catch (error) {
-        
+        response.status(500).send(error.message);
     }
 })
 router.delete('/delete-campaign/:id',async(request,response)=>{
