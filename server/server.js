@@ -28,4 +28,4 @@ app.get('/', (req, res) => {
   app.use('/',invoiceRoute)
 
 
-app.listen(5000,()=>{console.log('server listening on port 5000')})
+app.listen(process.env.PORT,()=>{console.log('server listening on port 5000')})
