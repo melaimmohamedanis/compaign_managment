@@ -4,11 +4,12 @@ const invoiceapi=axios.create({
     baseURL:"http://localhost:5000"
 });
 export const addInvoice=async(invoice_data)=>{
+    console.log('invoice_data',invoice_data)
     try {
-        const response = await invoiceapi.post("/addinvoice", invoice_data);
+        const response = await invoiceapi.post("/upload-campaign", invoice_data);
         return response.data
     } catch (error) {
-        
+        return error.message
     }
 }
 

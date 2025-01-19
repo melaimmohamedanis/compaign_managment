@@ -14,6 +14,8 @@ import Campaigns from './components/pages/Campaigns';
 import ReadCSV_exemple from './components/InvoiceCompenets/ReadCSV_exemple';
 import DashboardMain from './components/Dashboard/DashboardMain';
 import InvoiceDashboard from './components/Dashboard/InvoiceDashboard';
+import PublicRoute from './components/AuthPages/PublicRoute';
+import AdminRoute from './components/AuthPages/AdminRoute';
 /*
 <Routes>
 <Route path='/' element={<UserRoute/>}>
@@ -22,23 +24,33 @@ import InvoiceDashboard from './components/Dashboard/InvoiceDashboard';
 function App() {
   return (
     <BrowserRouter>
-    <Navbar/>
+   
         <Routes>
       
-        <Route path="/" element={<Home />} />
+       //home
+        <Route path="/" element={<PublicRoute />}>  
+        <Route path="/" element={<Home/>}/></Route>
 
-     
-      <Route path="/register" element={<Register />}> </Route>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/invoice" element={<InvoiceContainer />}></Route>
-      <Route path="/compaigns" element={<Campaigns />}></Route>
+    
+      <Route path="/register" element={<PublicRoute />}>  
+        <Route path="/register" element={<Register/>}/></Route>
+
+
+      <Route path="/login" element={<PublicRoute />}>  
+        <Route path="/login" element={<Login/>}/></Route>
+      
+      <Route path="/invoices" element={<UserRoute />}>  
+      <Route path="/invoices" element={<InvoiceContainer/>}/></Route> 
+
+
+      <Route path="/compaigns" element={<AdminRoute />}></Route>
       <Route path="/dashboard" element={<DashboardMain />}></Route>
          
 
-      <Route path="/dashboard/invoices" element={<DashboardMain />}>  
+      <Route path="/dashboard/invoices" element={<AdminRoute />}>  
       <Route path="/dashboard/invoices" element={<InvoiceDashboard/>}/></Route> 
 
-      <Route path="/dashboard/invoices/:id" element={<DashboardMain />}>  
+      <Route path="/dashboard/invoices/:id" element={<AdminRoute />}>  
       <Route path="/dashboard/invoices/:id" element={<InvoiceForm/>}/></Route> 
 
       

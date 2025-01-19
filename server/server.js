@@ -19,9 +19,11 @@ origin: 'http://localhost:3000',
     credentials: true,
 }
 ));
+
 app.get('/', (req, res) => {
     res.send('Server working !');
   });
+  
   app.use("/",userRoute);
   app.use('/',invoiceRoute)
 

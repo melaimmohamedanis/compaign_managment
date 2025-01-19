@@ -13,7 +13,7 @@ export const registeruserApi=async(newUser)=>{
       } catch (error) {
         if (error.response && error.response.status === 400) {
           // Handle 400 error
-        //  console.log(error.response.data.message); // Log the error message
+        // console.log('error',error.response.data.message); // Log the error message
           return { type: "error", text: error.response.data.message }; // Return error message
         }
     
@@ -54,6 +54,19 @@ export const IslogedIn   = async()=>{
     //  console.log(error.response.data.message); // Log the error message
       return {loginStatus:false, type: "error", text: error.response.data.message }; // Return error message
     }
+    
+  }
+}
+export const Logout =async()=>{
+  try {
+    const response = await userapi.post('/logout',{}, {withCredentials: true  });
+      console.log(response.data)
+    return response.data;
+    
+    
+  } catch (error) {
+      console.log('error',error.response.data.message); // Log the error message
+     return { type: "error", text: error.response.data.message }; // Return error message
     
   }
 }

@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import Papa from "papaparse";
 import UploadCSV from "./UploadCSV";
 import InvoiceExemple from "./InvoiceExemple";
+import { addInvoice } from "../Api/InvoiceApi";
 
 export default function ReadCSV() {
  const [invoiceData, setInvoiceData] = useState({});
+ const [message,setMessage]=useState('')
    const [items1, setItems1] = useState([]);
     const [file, setFile] = useState(null);
  //console.log("invoicedata",invoiceData['Company Location']);
- console.log("items",items1);
+// console.log("items",items1);
    const handleFileUpload = (file) => {
     // const file = event.target.files[0];
-    console.log("file",file)
+   // console.log("file",file)
      if (!file) return;
     setFile(file)
      Papa.parse(file, {
@@ -82,10 +84,23 @@ const client={
     }));
 
 
-console.log("items",items1)
+//console.log("items",items1)
 
-
-
+const handleAdd=()=>{
+  try {
+    addInvoice({ invoiceNumber,
+      tax,
+      company,
+      client,
+      items})
+      setMessage("Upload  Successfly ")
+  } catch (error) {
+    setMessage(error.message)
+    
+  }
+  
+}
+console.log('message',message)
    return (
    <div className=""> 
   {file ===null ?(
@@ -102,7 +117,12 @@ console.log("items",items1)
                client={client}
                items={items}
                tax={tax}
-                 />
+                 /> 
+
+                  {message===""?
+                 <button onClick={()=>handleAdd()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Upload your Invoice</button>
+              : message
+                }
                  </div>
                  )}  
 

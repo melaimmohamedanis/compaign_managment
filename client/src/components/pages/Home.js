@@ -5,7 +5,7 @@ const backgroundImage = '/assets/invoice.jpg';
 const Home = () => {
   const { data, isLoading,  error } = useQuery({ queryKey: ["user"],
     queryFn:IslogedIn});
- // console.log('query_data',data)
+  console.log('query_data',data)
 //console.log(data)
   return (
     <div

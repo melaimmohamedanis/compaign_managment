@@ -38,7 +38,7 @@ export default function UploadCSV  ({ onFileSelect })  {
       </p>
       <label
         htmlFor="file-upload"
-        className="cursor-pointer inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="cursor-pointer inline-block bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         Upload File
         <input

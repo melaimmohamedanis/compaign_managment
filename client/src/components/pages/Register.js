@@ -10,7 +10,7 @@ export default function Register() {
     const [message, setMessage] = useState({ type: "", text: "" });
     const {mutate:registeruser}=useMutation( {mutationFn:registeruserApi, onSuccess:()=>{
         setMessage({type: "success", text:"register successfly ,an email sent to activate your account"});
-      //  navigate("/",{replace:true})
+        navigate("/login",{replace:true})
       }})
 
       //  console.log("message",message) 
@@ -23,7 +23,7 @@ export default function Register() {
         phone_number: "",
         pan_card_number: "",
       });
-    //  console.log(formData)
+      console.log(formData.email)
       
     
       const handleChange = (e) => {

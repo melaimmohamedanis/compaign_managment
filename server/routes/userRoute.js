@@ -6,14 +6,15 @@ import dotenv from "dotenv";
 dotenv.config()
 const router =express.Router();
 router.post('/register',async (request,response)=>{
-   // console.log("body",request.body)
+    console.log("body",request.body.email)
     try {
         const regex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
         const regex_email=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const regex_password = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        
+      //  console.log(regex_email.test(request.body.email))
+      
         if(!request.body.firstname || !request.body.lastname ||
-             !request.body.email || !request.body.password || 
+          !request.body.email || !request.body.password || 
              !request.body.phone_number || !request.body.phone_number) {
                 return response.status(400).send({
                     message:'Send all required fileds:firstname,lastname,email,password,phone number,PAN card number'
@@ -37,13 +38,14 @@ router.post('/register',async (request,response)=>{
                 
             }
             else{
-                const existingUser = await User.findOne({ email });
+                const existingUser = await User.findOne({ email:request.body.email });
                 if (existingUser) {
                   return res
                     .status(400)
                     .send({ message: "User with the same email already exists" });
                 } 
             const password= request.body.password 
+          
             const newUser={
                 firstname:request.body.firstname,
                 lastname:request.body.lastname,
@@ -52,22 +54,20 @@ router.post('/register',async (request,response)=>{
                 phone_number:request.body.phone_number,
                 pan_card_number:request.body.pan_card_number,
             };
-            try {
+            console.log(newUser)
                 const user=await User.create(newUser);
                 return response.status(201).send(
                    { message:'User successflly register'}  );
-            } catch (error) {
-                return response.status(400).send({
-                    message:error.message
-                })
-            }
+            
+            
            
           
         }
     } catch (error) {
-       
+       //console.log('error',error)
         return response.status(400).send({
             message:error.message
+
         })
     }
 
@@ -98,7 +98,8 @@ router.post('/login',async(request,response)=>{
             expires:new Date(Date.now()+1000*20*60),
             httpOnly:true,
             sameSite:true,
-            secure:false
+            secure:false,
+            path: '/',
           });
 
           
@@ -151,4 +152,21 @@ router.get('/me',async(request,response)=>{
         }
   
 })
+router.post('/logout',async(request,response)=>{
+  console.log('Incoming request to /logout'); // Debug log
+
+ try{
+  console.log('Cookies before clear:', request.cookies.accesstoken);
+ 
+response.clearCookie("accesstoken")
+console.log('Cookies after clear:', request.cookies.accesstoken);
+ 
+ return  response.send('User Logout')
+}catch(error){
+  console.log(error)
+}
+
+
+})
+
 export default router;

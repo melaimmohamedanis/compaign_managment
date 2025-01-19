@@ -10,7 +10,18 @@ function trimKeys(obj) {
 router.post('/upload-campaign',async (request,response)=>{
 try {
     // Trim keys in the request body
-     const trimmedBody = trimKeys(request.body);
+    const { invoiceNumber, company, tax, client, items } = trimKeys(request.body); 
+console.log('invoiceNumber',invoiceNumber)
+     if (!invoiceNumber || !company || !tax || !client || !items ) {
+        return response.status(400).send('All required fields must be provided.'); }
+    if (!company.name || !company.location || !company.phone || !company.pan || !company.email) 
+       { return response.status(400).send('Company fields must all be provided.'); }
+     if (!client.name || !client.location || !client.email)
+        { return response.status(400).send('Client fields must all be provided.'); }
+      for (let item of items) { 
+       if (!item.name || !item.price || !item.quantity)
+            { return response.status(400).send('Each item must have a name, price, and quantity.'); } }
+  
       // Create a new invoice with the trimmed body 
       //const newInvoice = new Invoice(trimmedBody);
 /*
@@ -23,11 +34,11 @@ try {
 }
 */
 const invoice={
-    invoiceNumber:trimmedBody.invoiceNumber,
-    tax:trimmedBody.tax,
-    company:trimmedBody.company,
-    client:trimmedBody.client,
-    items:trimmedBody.items
+    invoiceNumber,
+    tax,
+    company,
+    client,
+    items
 }
 
 //console.log("invoice",trimmedBody)

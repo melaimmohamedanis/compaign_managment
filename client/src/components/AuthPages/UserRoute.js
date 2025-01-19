@@ -15,7 +15,7 @@ console.log(data)
     return <h1>Loading</h1>
   }
 
-  if( data?.me?.loginStatus===false || data?.me===null || data?.me===undefined){
+  if( data?.loginStatus===false || data===null || data===undefined){
     setTimeout(()=>navigate('/login',{replace:true}),3000)
     return(
       <>
