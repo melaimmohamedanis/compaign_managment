@@ -4,7 +4,10 @@ dotenv.config();
 
 
 export const database=()=>{
-    mongoose.connect(`${process.env.MONGOURL}`);
+    mongoose.connect(`${process.env.MONGOURL}`, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
     mongoose.connection.once('open',()=>{
         console.log(('database connected 👌'))
     })
