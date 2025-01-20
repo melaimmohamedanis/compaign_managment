@@ -97,8 +97,8 @@ router.post('/login',async(request,response)=>{
           response.cookie("accesstoken",accesstoken,{
             expires:new Date(Date.now()+1000*20*60),
             httpOnly:true,
-            sameSite:true,
-            secure:false,
+            sameSite:'none',
+            secure:true,
             path: '/',
           });
 
