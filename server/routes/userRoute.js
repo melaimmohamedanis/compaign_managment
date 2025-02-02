@@ -159,6 +159,7 @@ router.post('/logout',async(request,response)=>{
   console.log('Cookies before clear:', request.cookies.accesstoken);
  
 response.clearCookie("accesstoken")
+response.end()
 console.log('Cookies after clear:', request.cookies.accesstoken);
  
  return  response.send('User Logout')
