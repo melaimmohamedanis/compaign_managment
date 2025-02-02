@@ -15,20 +15,24 @@ export default function () {
       const [message, setMessage] = useState({ type: "", text: "" });
       const handleSubmit = async(e) =>{
         e.preventDefault();
-             
+      //  const dataApi= await loginuserApi(formData);
+        const dataApi=  loginuser(formData);
+          setMessage({type:dataApi.type, text:dataApi.text})
+            /*
                 try {
                   //  const data= await loginuserApi(formData);
                   const data=  loginuser(formData);
                     setMessage({type:data.type, text:data.text})
                   console.log("data",data)
-                  } catch (error) {
+                
+                } catch (error) {
                   
         
                         setMessage({type:"error",text:error.response?.data?.messag})
                     // Handle errors (e.g., set an error message in state)
                     setMessage({type:"error",text: "Something went wrong!"})
                    // setSuccessMessage(""); // Clear success messages
-                  }
+                  }*/
       }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 text-red-700">
