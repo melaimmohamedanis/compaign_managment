@@ -17,6 +17,7 @@ export default function () {
         e.preventDefault();
       //  const dataApi= await loginuserApi(formData);
         const dataApi=  loginuser(formData);
+        console.log("dataApi",dataApi)
           setMessage({type:dataApi.type, text:dataApi.text})
             /*
                 try {
