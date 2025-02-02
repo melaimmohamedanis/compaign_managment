@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const invoiceapi=axios.create({
-    baseURL:"http://localhost:5000"
+    baseURL:process.env.REACT_APP_BACKENDURL
 });
 export const addInvoice=async(invoice_data)=>{
     console.log('invoice_data',invoice_data)
